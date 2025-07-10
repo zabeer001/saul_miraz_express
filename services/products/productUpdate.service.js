@@ -21,7 +21,7 @@ export const productUpdateService = async (req, productId) => {
   if (!product) throw new Error('Product not found');
 
   // Extract fields from request body
-  const {
+  let {
     name,
     description,
     price,
@@ -51,6 +51,8 @@ export const productUpdateService = async (req, productId) => {
       product.media = await zabeerUpdateMultipleMedia(files['media'], product.media);
     }
 
+    // name = 'egal'; you can change the data 
+
     // Define fields to update with values from request body
     const fieldsToUpdate = {
       name,
@@ -62,6 +64,8 @@ export const productUpdateService = async (req, productId) => {
       stock_quantity,
       sales,
     };
+
+
 
     // Apply non-undefined fields to the product using the helper
     zabeerUpdateModelFields(product, fieldsToUpdate);
