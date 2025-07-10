@@ -46,7 +46,30 @@ export const productUpdateService = async (req, productId) => {
       product.image = await zabeerUpdateMainImage(files['image'][0], product.image);
     }
 
+    
+
     // Update the product’s gallery media if new media files are provided
+
+    // "media": [
+    //   {
+    //     "file_path": "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752159453/products/uuk0qkscmcxd1kkyd3ub.png",
+    //     "alt": "",
+    //     "order": 0,
+    //     "_id": "686fd4e1c0581ee4916e8a36"
+    //   },
+    //   {
+    //     "file_path": "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752159455/products/ghj7cbkfcdaryrrrjpkc.png",
+    //     "alt": "",
+    //     "order": 0,
+    //     "_id": "686fd4e1c0581ee4916e8a37"
+    //   },
+    //   {
+    //     "file_path": "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752159456/products/n23i3kwgdn9gavwxocjc.png",
+    //     "alt": "",
+    //     "order": 0,
+    //     "_id": "686fd4e1c0581ee4916e8a38"
+    //   }
+    // ],
     if (files['media']) {
       product.media = await zabeerUpdateMultipleMedia(files['media'], product.media);
     }
