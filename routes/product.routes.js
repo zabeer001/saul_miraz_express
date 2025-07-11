@@ -1,6 +1,8 @@
 import express from 'express';
 import ProductController from '../controllers/product.controller.js';
 import upload from "../helpers/multer.js";
+import { authenticate } from '../middleware/authMiddleware.js';
+import { isAdmin } from '../middleware/adminMiddleware.js';
 
 const productRouter = express.Router();
 
@@ -9,7 +11,7 @@ const productRouter = express.Router();
 productRouter.post('/', upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'media', maxCount: 7 },
-]),ProductController.store);
+]), authenticate, isAdmin,  ProductController.store);
 
 
 productRouter.get('/', ProductController.index);       // List all products
@@ -19,10 +21,10 @@ productRouter.get('/:id', ProductController.show);     // Get single product
 productRouter.put('/:id', upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'media', maxCount: 7 },
-]),ProductController.update);
+]), authenticate, isAdmin ,ProductController.update);
 
 
-productRouter.delete('/:id', ProductController.destroy); // Delete product
+productRouter.delete('/:id', authenticate, isAdmin, ProductController.destroy); // Delete product
 
 
 export default productRouter;
