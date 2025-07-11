@@ -1,6 +1,6 @@
 import { updateCloudinaryImage } from './cloudinary.js';
 
-export const zabeerUpdateMainImage = async (imageFile, oldImageUrl) => {
+export const updateSingleImage = async (imageFile, oldImageUrl) => {
   if (!imageFile || !imageFile.buffer) return oldImageUrl;
 
   const base64 = `data:${imageFile.mimetype};base64,${imageFile.buffer.toString('base64')}`;

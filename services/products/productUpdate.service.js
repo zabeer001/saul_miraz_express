@@ -1,8 +1,8 @@
 import Product from '../../models/product.model.js';
 import Category from '../../models/category.model.js';
-import { zabeerUpdateMainImage } from '../../helpers/zabeerUpdateMainImage.js';
-import { zabeerUpdateMultipleMedia } from '../../helpers/zabeerUpdateMultipleMedia.js';
-import { zabeerUpdateModelFields } from '../../helpers/zabeerUpdateModelFields.js';
+import { updateSingleImage } from '../../helpers/updateSingleImage.js';
+import { updateMultipleMedia } from '../../helpers/updateMultipleMedia.js';
+import { updateModelFields } from '../../helpers/updateModelFields.js';
 
 /**
  * Updates a product with provided fields, image, and media.
@@ -43,7 +43,7 @@ export const productUpdateService = async (req, productId) => {
 
     // Update the main product image if a new image file is provided
     if (files['image'] && files['image'][0]) {
-      product.image = await zabeerUpdateMainImage(files['image'][0], product.image);
+      product.image = await updateSingleImage(files['image'][0], product.image);
     }
 
     
@@ -71,7 +71,7 @@ export const productUpdateService = async (req, productId) => {
     //   }
     // ],
     if (files['media']) {
-      product.media = await zabeerUpdateMultipleMedia(files['media'], product.media);
+      product.media = await updateMultipleMedia(files['media'], product.media);
     }
 
     // name = 'egal'; you can change the data 
@@ -91,7 +91,7 @@ export const productUpdateService = async (req, productId) => {
 
 
     // Apply non-undefined fields to the product using the helper
-    zabeerUpdateModelFields(product, fieldsToUpdate);
+    updateModelFields(product, fieldsToUpdate);
 
     // Save the updated product to the database
     await product.save();

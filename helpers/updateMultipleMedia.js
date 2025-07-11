@@ -1,7 +1,7 @@
 import { updateMultipleImages } from "./updateMultipleImages.js";
 
 
-export const zabeerUpdateMultipleMedia = async (mediaFiles, productMedia) => {
+export const updateMultipleMedia = async (mediaFiles, productMedia) => {
   if (!mediaFiles) return productMedia || [];
 
   // Get old image URLs from product media
