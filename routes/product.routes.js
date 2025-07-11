@@ -9,7 +9,7 @@ const productRouter = express.Router();
 productRouter.post('/', upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'media', maxCount: 7 },
-]), ProductController.store);
+]),ProductController.store);
 
 
 productRouter.get('/', ProductController.index);       // List all products
@@ -19,7 +19,7 @@ productRouter.get('/:id', ProductController.show);     // Get single product
 productRouter.put('/:id', upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'media', maxCount: 7 },
-]), ProductController.update);
+]),ProductController.update);
 
 
 productRouter.delete('/:id', ProductController.destroy); // Delete product

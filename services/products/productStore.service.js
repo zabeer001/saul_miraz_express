@@ -31,7 +31,6 @@ export const productStoreService = async (req) => {
   // Upload gallery media (if any) using a helper like updateMultipleImages, but for new uploads
   
 // let uploadedMedia = [];
-
 if (files['media']) {
   var uploadedMedia = await uploadMultipleMedia(files['media'], 'products');
 }

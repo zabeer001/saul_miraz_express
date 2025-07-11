@@ -5,13 +5,13 @@ import { authenticate } from "../middleware/authMiddleware.js";
 
 const authRouter = Router();
 
-authRouter.post('/login', upload.array('photos', 3), AuthController.login);
+authRouter.post('/login', upload.none() ,AuthController.login);
 
 authRouter.post('/sign-up', upload.none(), AuthController.signUp);
 
-authRouter.post('/logout', AuthController.logout);
+authRouter.post('/logout', authenticate , AuthController.logout);
 
-authRouter.get('/profile-details', authenticate, AuthController.profile);
+authRouter.get('/me', authenticate, AuthController.profile);
 
 // No middleware here, just call controller directly
 

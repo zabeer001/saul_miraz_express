@@ -2,7 +2,6 @@
 import { signUpService } from '../services/auth/signup.service.js';
 import { loginService } from '../services/auth/login.service.js';
 import { logoutService } from '../services/auth/logout.service.js';
-import { profileService } from '../services/users/profile.service.js';
 
 
 
@@ -40,7 +39,7 @@ class AuthController {
   }
 
   static async logout(req, res) {
-    const { token } = req.body;
+    const token = req.headers.authorization?.split(' ')[1]; // ✅ Extract token from header
 
     try {
       const result = await logoutService(token);
@@ -53,13 +52,14 @@ class AuthController {
 
   static async profile(req, res) {
     try {
-      const user = await profileService(req.user?.userId);
+      const user = req.authUser; // 👈 already fetched in middleware
+
       return res.json({
         message: 'Profile retrieved successfully',
         user,
       });
     } catch (err) {
-      console.error('Logout error:', err.message);
+      console.error('Profile fetch error:', err.message);
       return res.status(400).json({ message: err.message });
     }
   }
