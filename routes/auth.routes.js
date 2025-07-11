@@ -13,6 +13,5 @@ authRouter.post('/logout', authenticate , AuthController.logout);
 
 authRouter.get('/me', authenticate, AuthController.profile);
 
-// No middleware here, just call controller directly
 
 export default authRouter;

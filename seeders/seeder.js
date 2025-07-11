@@ -4,6 +4,9 @@ import { DB_URI } from '../config/env.js';
 import userSeeder from './userSeeder.js';
 import categorySeeder from './categorySeeder.js';
 import productSeeder from './productSeeder.js';
+import { reviewSeeder } from './reviewSeeder.js';
+import { promoCodeSeeder } from './promoCodeSeeder.js';
+
 // import productSeeder from './productSeeder.js';
 
 
@@ -15,6 +18,8 @@ const runAllSeeders = async () => {
     await userSeeder();
     await categorySeeder();
     await productSeeder();
+    await reviewSeeder();
+    await promoCodeSeeder();
     // await productSeeder();
 
 

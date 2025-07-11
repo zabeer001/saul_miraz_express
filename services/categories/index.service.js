@@ -13,7 +13,7 @@ export const indexService = async (req) => {
     const options = {
       page,
       limit: per_page,
-      lean: true, // Improve performance
+      lean: true, 
     };
 
       
@@ -21,7 +21,8 @@ export const indexService = async (req) => {
     const paginationResult = await Category.paginate({}, options);
     const data = formatPaginationResponse(paginationResult, params, req);
   // console.log('hello');
-    return data;
+    // return {success:true , ...data};
+    return {success:true , data};
   } catch (error) {
     throw new Error(`Failed to fetch users: ${error.message}`);
   }

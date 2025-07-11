@@ -11,13 +11,15 @@ export const productIndexService = async (req) => {
       page,
       limit: per_page,
       lean: true,
-      sort: { createdAt: -1 }, // ✅ correct way to sort
+      sort: { createdAt: -1 }, 
     };
 
     const paginationResult = await Product.paginate({}, options);
     const data = formatPaginationResponse(paginationResult, params, req);
 
-    return data;
+    // return { success:true , ...data };
+    return { success:true , data };
+
   } catch (error) {
     throw new Error(`Failed to fetch products: ${error.message}`);
   }
