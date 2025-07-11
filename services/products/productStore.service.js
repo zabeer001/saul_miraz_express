@@ -1,7 +1,7 @@
 import Product from '../../models/product.model.js';
 import Category from '../../models/category.model.js';
-import { uploadToCloudinary } from '../../helpers/cloudinary.js';
-import { uploadMultipleImages } from '../../helpers/uploadMultipleImages.js'; // create this helper similar to updateMultipleImages
+import { uploadSingleImage } from '../../helpers/uploadSingleImage.js';
+import { uploadMultipleMedia } from '../../helpers/uploadMultipleMedia.js';
 
 export const productStoreService = async (req) => {
   const body = req.body || {};
@@ -24,28 +24,17 @@ export const productStoreService = async (req) => {
   if (!category) throw new Error('Category not found');
 
   // Upload main image (if any)
-  let uploadedImage = null;
-  if (files['image'] && files['image'][0]?.buffer) {
-    const image = files['image'][0];
-    const base64 = `data:${image.mimetype};base64,${image.buffer.toString('base64')}`;
-    const uploadRes = await uploadToCloudinary(base64);
-    uploadedImage = uploadRes.secure_url;
-  }
+ const uploadedImage = await uploadSingleImage(files, 'image');
 
   // Upload gallery images (if any) using a helper like updateMultipleImages, but for new uploads
 
   // Upload gallery media (if any) using a helper like updateMultipleImages, but for new uploads
-  let uploadedMedia = [];
-  if (files['media']) {
-    // uploadMultipleImages should return array of { file_path, alt, order }
-    uploadedMedia = await uploadMultipleImages(files['media']);
-    // Ensure all media objects have required fields for the model
-    uploadedMedia = uploadedMedia.map((media, idx) => ({
-      file_path: media.file_path || media.url || '',
-      alt: media.alt || '',
-      order: typeof media.order === 'number' ? media.order : idx,
-    }));
-  }
+  
+// let uploadedMedia = [];
+
+if (files['media']) {
+  var uploadedMedia = await uploadMultipleMedia(files['media'], 'products');
+}
 
   // Create product with uploaded image URLs and fields
 
