@@ -22,12 +22,13 @@ const promoCodeSchema = new mongoose.Schema({
     trim: true,
   },
   usage_limit: {
-    type: String,
+    type: Number,
     trim: true,
   },
   amount: {
-    type: mongoose.Types.Decimal128,
+    type: Number,
     required: true,
+    set: (value) => parseFloat(value.toFixed(2)),
   },
 }, {
   timestamps: true,

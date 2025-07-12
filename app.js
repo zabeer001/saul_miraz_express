@@ -9,6 +9,7 @@ import categoryRouter from './routes/category.routes.js';
 import productRouter from './routes/product.routes.js';
 import promoCodeRouter from './routes/promoCode.routes.js';
 import reviewRouter from './routes/review.routes.js';
+import orderRouter from './routes/order.routes.js';
 
 
 
@@ -29,7 +30,7 @@ app.use('/api/categories', categoryRouter);
 app.use('/api/products', productRouter);
 app.use('/api/promocodes', promoCodeRouter);
 app.use('/api/reviews', reviewRouter);
-
+app.use('/api/orders', orderRouter);
 
 
 

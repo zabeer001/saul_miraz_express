@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 const orderSchema = new mongoose.Schema({
-  customer_id: {
+  user_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Customer',
+    ref: 'User',
     default: null,
   },
   type: {
@@ -27,8 +27,9 @@ const orderSchema = new mongoose.Schema({
     default: null,
   },
   shipping_price: {
-    type: mongoose.Types.Decimal128,
-    default: 0.00,
+  type: Number,
+    required: true,
+    set: (value) => parseFloat(value.toFixed(2)),
   },
   order_summary: {
     type: String,
@@ -55,8 +56,9 @@ const orderSchema = new mongoose.Schema({
     default: null,
   },
   total: {
-    type: mongoose.Types.Decimal128,
+   type: Number,
     required: true,
+    set: (value) => parseFloat(value.toFixed(2)),
   },
 }, {
   timestamps: true,

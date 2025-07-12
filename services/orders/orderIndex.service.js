@@ -1,7 +1,8 @@
-import Product from "../../models/product.model.js"; // import Product model
-import { formatPaginationResponse } from "../../helpers/formatPaginationResponse.js";
 
-export const productIndexService = async (req) => {
+import { formatPaginationResponse } from "../../helpers/formatPaginationResponse.js";
+import Order from "../../models/order.model.js";
+
+export const orderIndexService = async (req) => {
   try {
     const params = req.query;
     const page = parseInt(params?.page, 10) ?? 1;
@@ -14,7 +15,7 @@ export const productIndexService = async (req) => {
       sort: { createdAt: -1 }, 
     };
 
-    const paginationResult = await Product.paginate({}, options);
+    const paginationResult = await Order.paginate({}, options);
     const data = formatPaginationResponse(paginationResult, params, req);
 
     // return { success:true , ...data };
