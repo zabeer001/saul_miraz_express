@@ -7,6 +7,8 @@ import upload from "../helpers/multer.js";
 
 const categoryRouter = express.Router();
 
+categoryRouter.get('/by-type', CategoryController.indexByType);
+
 categoryRouter.post('/', upload.none() ,authenticate , isAdmin , CategoryController.store);
 categoryRouter.get('/', CategoryController.index);
 categoryRouter.get('/:id', CategoryController.show);

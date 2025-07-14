@@ -1,6 +1,8 @@
+import { bestSellingProductsService } from "../services/orders/bestSellingProducts.service.js";
 import { orderDestroyService } from "../services/orders/orderDestroy.service.js";
 import { orderIndexService } from "../services/orders/orderIndex.service.js";
 import { orderShowService } from "../services/orders/orderShow.service.js";
+import { orderStatsService } from "../services/orders/orderStatsService.js";
 import { orderStoreService } from "../services/orders/orderStore.service.js";
 import { orderUpdateService } from "../services/orders/orderUpdate.service.js";
 
@@ -9,11 +11,10 @@ class OrderController {
 
   static async store(req, res) {
     try {
-      
+
       const result = await orderStoreService(req);
       return res.status(201).json({
-        message: 'Order created successfully',
-        data: result,
+       
       });
     } catch (error) {
       return res.status(400).json({
@@ -26,7 +27,10 @@ class OrderController {
   static async index(req, res) {
     try {
       const result = await orderIndexService(req);
-      return res.status(200).json(result);
+      return res.status(200).json({
+        message: 'all data retrived',
+        data: result
+      });
     } catch (error) {
       return res.status(500).json({
         message: 'Failed to fetch orders',
@@ -75,6 +79,38 @@ class OrderController {
         error: error.message,
       });
     }
+  }
+
+  static async orderStatsTable(req, res) {
+    try {
+      const result = await orderStatsService(req);
+      return res.status(200).json({
+        message: 'Data retrieved successfully',
+        ...result,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: 'Failed to retrieve order stats',
+        error: error.message,
+      });
+    }
+  }
+
+  static async bestSellingProducts(req, res) {
+
+    try {
+      const result = await bestSellingProductsService(req);
+      return res.status(200).json({
+        message: 'Data retrieved successfully',
+        ...result,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: 'Failed to retrieve order stats',
+        error: error.message,
+      });
+    }
+
   }
 }
 

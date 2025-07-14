@@ -8,6 +8,7 @@ import { reviewSeeder } from './reviewSeeder.js';
 import { promoCodeSeeder } from './promoCodeSeeder.js';
 import { orderSeeder } from './orderSeeder.js';
 import { orderProductSeeder } from './orderProductSeeder.js';
+import contactSeeder from './conatctSeeder.js';
 
 // import productSeeder from './productSeeder.js';
 
@@ -24,6 +25,7 @@ const runAllSeeders = async () => {
     await promoCodeSeeder();
     await orderSeeder();
     await orderProductSeeder();
+    await contactSeeder();
     // await productSeeder();
 
 

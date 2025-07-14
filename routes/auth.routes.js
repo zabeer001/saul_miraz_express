@@ -5,13 +5,13 @@ import { authenticate } from "../middleware/authMiddleware.js";
 
 const authRouter = Router();
 
-authRouter.post('/login', upload.none() ,AuthController.login);
+authRouter.post('/auth/login', upload.none() ,AuthController.login);
 
-authRouter.post('/sign-up', upload.none(), AuthController.signUp);
+authRouter.post('/auth//sign-up', upload.none(), AuthController.signUp);
 
-authRouter.post('/logout', authenticate , AuthController.logout);
+authRouter.post('/auth//logout', authenticate , AuthController.logout);
 
-authRouter.get('/me', authenticate, AuthController.profile);
+authRouter.get('/auth//me', authenticate, AuthController.profile);
 
 
 export default authRouter;

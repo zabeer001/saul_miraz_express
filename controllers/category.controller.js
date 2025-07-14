@@ -4,6 +4,7 @@ import { showService } from '../services/categories/show.service.js';
 import { updateService } from '../services/categories/update.service.js';
 import { destroyService } from '../services/categories/destroy.service.js';
 import { storeService } from '../services/categories/store.service.js';
+import Category from '../models/category.model.js';
 
 class CategoryController {
   static async store(req, res) {
@@ -24,7 +25,10 @@ class CategoryController {
   static async index(req, res) {
     try {
       const result = await indexService(req);
-      return res.status(200).json(result);
+      return res.status(200).json({
+        message: 'daata retrived successfully',
+        data: result
+      });
     } catch (error) {
       return res.status(500).json({
         message: 'Failed to fetch categories',
@@ -32,6 +36,38 @@ class CategoryController {
       });
     }
   }
+
+
+static async indexByType(req, res) {
+  try {
+    const items = await Category.find(); // fetch all documents
+
+    // Grouping logic
+    const grouped = {};
+    for (const item of items) {
+      const type = item.type || 'Unknown';
+      if (!grouped[type]) {
+        grouped[type] = [];
+      }
+      grouped[type].push(item);
+    }
+
+    return res.status(200).json({
+      success: true,
+      ...grouped,
+    });
+
+  } catch (error) {
+    console.error('Error in indexByType:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      error: error.message,
+    });
+  }
+}
+
+
 
   static async show(req, res) {
     try {

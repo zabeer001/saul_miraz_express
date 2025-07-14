@@ -6,6 +6,8 @@ import { isAdmin } from '../middleware/adminMiddleware.js';
 
 const productRouter = express.Router();
 
+// stats
+productRouter.get('/stats', ProductController.stats);     // Get single product
 
 //store
 productRouter.post('/', upload.fields([

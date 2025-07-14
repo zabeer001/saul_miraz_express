@@ -19,12 +19,12 @@ export const orderStoreService = async (req) => {
   } = body;
 
   // Log raw body for debugging
-  console.log('req.body:', JSON.stringify(body, null, 2));
+  // console.log('req.body:', JSON.stringify(body, null, 2));
 
   // Get products from body
   let products = body.products || [];
- 
-  
+
+
   if (typeof products === 'string') {
     try {
       products = JSON.parse(products);
@@ -32,10 +32,10 @@ export const orderStoreService = async (req) => {
       throw new Error(`Invalid products format: ${error.message}`);
     }
   }
- console.log(products);
-  // Log parsed products
-  console.log('Parsed products:', JSON.stringify(products, null, 2));
-  console.log('typeof(products):', typeof products);
+  //  console.log(products);
+  //   // Log parsed products
+  //   console.log('Parsed products:', JSON.stringify(products, null, 2));
+  //   console.log('typeof(products):', typeof products);
 
   // Validate total
   if (!total || isNaN(Number(total))) {

@@ -50,7 +50,7 @@ class ReviewController {
 
             return res.status(200).json({
                 success: true,
-                ...data, // contains `data` key instead of `docs`
+                data: data, // contains `data` key instead of `docs`
             });
         } catch (error) {
             return res.status(500).json({

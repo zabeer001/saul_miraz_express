@@ -10,15 +10,20 @@ import productRouter from './routes/product.routes.js';
 import promoCodeRouter from './routes/promoCode.routes.js';
 import reviewRouter from './routes/review.routes.js';
 import orderRouter from './routes/order.routes.js';
+import contactRouter from './routes/contact.router.js';
+import cors from 'cors';
 
 
 
 const app = express();
 
+
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-
+// ✅ Allow all origins (Access-Control-Allow-Origin: *) 
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send(`app is running on http://localhost:${PORT}`);
@@ -27,10 +32,23 @@ app.get('/', (req, res) => {
 app.use('/api', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/categories', categoryRouter);
+
+// products
+// app.use('/api', productRouter);
 app.use('/api/products', productRouter);
+
 app.use('/api/promocodes', promoCodeRouter);
 app.use('/api/reviews', reviewRouter);
+
+// order
+// app.use('/api', orderRouter);
 app.use('/api/orders', orderRouter);
+
+app.use('/api/contacts', contactRouter);
+
+
+
+
 
 
 

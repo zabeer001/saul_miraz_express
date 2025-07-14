@@ -1,74 +1,112 @@
-import Category from '../../models/category.model.js';
-import { updateSingleImage } from '../../helpers/updateSingleImage.js';
-import { updateMultipleMedia } from '../../helpers/updateMultipleMedia.js';
-import { updateModelFields } from '../../helpers/updateModelFields.js';
 import Order from '../../models/order.model.js';
+import { syncOrderProducts } from '../../helpers/syncOrderProducts.js';
+import { updateModelFields } from '../../helpers/updateModelFields.js';
 
 /**
- * Updates a product with provided fields, image, and media.
- * @param {Object} req - Express request object containing body (field data) and files (image/media uploads).
- * @param {string} productId - MongoDB ID of the product to update.
- * @returns {Promise<Object>} Updated product document.
- * @throws {Error} If product or category is not found, or update fails.
+ * Updates an existing order with provided data and product sync.
+ * @param {Object} req - Express request object with `body`, `params`, and `authUser`.
+ * @param {string} orderId - ID of the order to update.
+ * @returns {Promise<Object>} The updated order object.
+ * @throws {Error} If validation fails or the update fails.
  */
-export const orderUpdateService = async (req, orderID) => {
-  // Ensure request body and files are objects, default to empty if undefined
+export const orderUpdateService = async (req, orderId) => {
   const body = req.body || {};
-  const files = req.files || {};
+  const user_id = req.authUser;
 
-  // Fetch product by ID from the database
-  const order = await Order.findById(orderID);
+  // Fetch existing order
+  const order = await Order.findById(orderId);
   if (!order) throw new Error('Order not found');
 
-  // Extract fields from request body
+  // Destructure and normalize body fields
   let {
-    name,
-    description,
-    price,
-    category_id,
+    type,
     status,
-    arrival_status,
-    cost_price,
-    stock_quantity,
-    sales,
+    shipping_method,
+    shipping_price,
+    order_summary,
+    payment_method,
+    payment_status,
+    promocode_id,
+    promocode_name,
+    total,
+    products,
   } = body;
 
   try {
-    // Check if a new category ID is provided and validate it
-    if (category_id) {
-      const category = await Category.findById(category_id);
-      if (!category) throw new Error('Category not found');
-      product.category_id = category_id; // Update product’s category
+    // Optional: parse products if string (form-data support)
+    if (typeof products === 'string') {
+      try {
+        products = JSON.parse(products);
+      } catch (error) {
+        throw new Error(`Invalid products format: ${error.message}`);
+      }
     }
 
-    
+    // If updating products, validate
+    if (products) {
+      if (!Array.isArray(products) || products.length === 0) {
+        throw new Error('Products must be a non-empty array');
+      }
 
-    // name = 'egal'; you can change the data 
+      for (const product of products) {
+        if (!product.product_id || !product.quantity) {
+          throw new Error('Each product must include product_id and quantity');
+        }
+      }
+    }
 
-    // Define fields to update with values from request body
+    // Validate total if provided
+    if (total !== undefined && isNaN(Number(total))) {
+      throw new Error('Total must be a valid number');
+    }
+
+    // Type conversion
+    if (shipping_price !== undefined) shipping_price = Number(shipping_price);
+    if (total !== undefined) total = Number(total);
+
+    // Prepare fields to update
     const fieldsToUpdate = {
-      name,
-      description,
-      price,
+      user_id, // usually not updated, but still reattached
+      type,
       status,
-      arrival_status,
-      cost_price,
-      stock_quantity,
-      sales,
+      shipping_method,
+      shipping_price,
+      order_summary,
+      payment_method,
+      payment_status,
+      promocode_id,
+      promocode_name,
+      total,
     };
 
+    // Apply field updates only if they're not undefined
+    updateModelFields(order, fieldsToUpdate);
 
+    // If products provided, re-sync pivot table
+    if (products) {
+      const syncResult = await syncOrderProducts(order._id, products);
+      if (!syncResult.success) {
+        throw new Error(syncResult.message);
+      }
+    }
 
-    // Apply non-undefined fields to the product using the helper
-    updateModelFields(product, fieldsToUpdate);
+    // Update item count if products were updated
+    if (products) {
+      order.items = products.length;
+    }
 
-    // Save the updated product to the database
-    await product.save();
+    // Save updated order
+    await order.save();
 
-    // Return the updated product document
-    return product;
+    return {
+      success: true,
+      message: 'Order updated successfully',
+      data: {
+        ...order.toObject(),
+        ...(products && { products }),
+      },
+    };
   } catch (error) {
-    // Handle any errors from database or helper operations
-    throw new Error(`Failed to update product: ${error.message}`);
+    throw new Error(`Failed to update order: ${error.message}`);
   }
 };
