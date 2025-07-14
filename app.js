@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 });
 
 // app.use('/api/auth', authRouter);
-app.use('/api', authRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/categories', categoryRouter);
 
