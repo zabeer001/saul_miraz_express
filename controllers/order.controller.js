@@ -14,7 +14,8 @@ class OrderController {
 
       const result = await orderStoreService(req);
       return res.status(201).json({
-       
+          message: 'daata retrived successfully',
+        data: result
       });
     } catch (error) {
       return res.status(400).json({

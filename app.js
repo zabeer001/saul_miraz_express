@@ -12,6 +12,7 @@ import reviewRouter from './routes/review.routes.js';
 import orderRouter from './routes/order.routes.js';
 import contactRouter from './routes/contact.router.js';
 import cors from 'cors';
+import stripeRouter from './routes/stripe.routes.js';
 
 
 
@@ -46,6 +47,8 @@ app.use('/api/reviews', reviewRouter);
 app.use('/api/orders', orderRouter);
 
 app.use('/api/contacts', contactRouter);
+
+app.use('/api/stripe', stripeRouter);
 
 
 

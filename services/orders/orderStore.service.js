@@ -1,9 +1,12 @@
 import Order from '../../models/order.model.js';
 import mongoose from 'mongoose';
 import { syncOrderProducts } from '../../helpers/syncOrderProducts.js';
+import { manageProductInventory } from '../../helpers/stockManageHelpersForEcommerce/manageProductInventory.js';
 
 export const orderStoreService = async (req) => {
   const body = req.body || {};
+
+  // return body;
 
   let {
     type = null,
@@ -23,6 +26,10 @@ export const orderStoreService = async (req) => {
 
   // Get products from body
   let products = body.products || [];
+
+  // console.log(products);
+  // return products;
+  
 
 
   if (typeof products === 'string') {
@@ -46,6 +53,8 @@ export const orderStoreService = async (req) => {
   shipping_price = Number(shipping_price);
   total = Number(total);
 
+
+
   // Create order
   const order = await Order.create({
     user_id,
@@ -67,6 +76,8 @@ export const orderStoreService = async (req) => {
   if (!syncResult.success) {
     throw new Error(syncResult.message);
   }
+
+  await manageProductInventory(products);
 
   return {
     success: true,

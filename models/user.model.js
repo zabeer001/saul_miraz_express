@@ -16,20 +16,23 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: function () {
+            return !this.googleAuth;
+        },
         minlength: 6, // optional: for basic validation
     },
+    
     role: {
         type: String,
         required: true,
-        default: 'user', // set default value
+        default: 'user',
     }
 }, {
     timestamps: true,
 });
 
-//paginate
-userSchema.plugin(mongoosePaginate); // Attach the pagination plugin
+// Add pagination plugin
+userSchema.plugin(mongoosePaginate);
 
 const User = mongoose.model('User', userSchema);
 

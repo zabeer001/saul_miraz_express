@@ -2,6 +2,7 @@
 import { signUpService } from '../services/auth/signup.service.js';
 import { loginService } from '../services/auth/login.service.js';
 import { logoutService } from '../services/auth/logout.service.js';
+import {googleLogin} from '../services/auth/googleLogin.js';
 
 
 
@@ -63,6 +64,19 @@ class AuthController {
       return res.status(400).json({ message: err.message });
     }
   }
+
+  static async loginWithGoogle(req, res) {
+    try {
+        const result = await googleLogin(req.body);
+        return res.status(result.status).json(result);
+    } catch (error) {
+        console.error('Login error:', error);
+        return res.status(400).json({
+            message: 'Login failed',
+            error: error.message,
+        });
+    }
+}
 
 }
 

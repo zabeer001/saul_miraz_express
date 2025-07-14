@@ -10,3 +10,9 @@ export const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '';
 
 export const CLOUDINARY_URL = process.env.CLOUDINARY_URL || '';
 // .env.development.local
+
+
+export const STRIPE_KEY = process.env.STRIPE_KEY || '';
+export const STRIPE_SECRET = process.env.STRIPE_SECRET || '';
+
+export const FRONTEND_URL = process.env.FRONTEND_URL || '';

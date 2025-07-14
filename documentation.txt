@@ -12,3 +12,6 @@ statts =>
 product stats => 
 {{url}}/api/products/stats 
 {{url}}/api/products/best-selling-products
+
+
+{{url}}/api/auth/google/jwt-process done 
