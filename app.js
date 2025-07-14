@@ -29,6 +29,7 @@ app.get('/', (req, res) => {
   res.send(`app is running on http://localhost:${PORT}`);
 });
 
+// app.use('/api/auth', authRouter);
 app.use('/api', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/categories', categoryRouter);
