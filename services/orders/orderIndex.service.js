@@ -4,45 +4,52 @@ import Order from "../../models/order.model.js";
 export const orderIndexService = async (req) => {
   try {
     const params = req.query;
-    const search = params.search?.trim(); // Get and trim search query
-    const status = params.status; // Get status filter (e.g., 'pending', 'completed')
-    const id = params.id; // Get _id filter (e.g., '6871faa1dc12bd7ece0e3ff4')
+    const search = params.search?.trim();
+    const status = params.status;
+    const id = params.id;
 
     const page = parseInt(params?.page, 10) ?? 1;
     const per_page = parseInt(params?.paginate_count, 10) ?? 10;
 
-    // Build query object for filtering
     const query = {};
 
-    // Add search filter (case-insensitive search on orderNumber or customerEmail)
     if (search) {
       query.$or = [
-        { orderNumber: { $regex: search, $options: 'i' } }, // Search in order number
-        { customerEmail: { $regex: search, $options: 'i' } }, // Search in customer email
+        { orderNumber: { $regex: search, $options: 'i' } },
+        { customerEmail: { $regex: search, $options: 'i' } },
       ];
     }
 
-    // Add status filter if provided
     if (status) {
-      query.status = status; // Assumes status is a field in your Order model
+      query.status = status;
     }
 
-    // Add _id filter if provided
     if (id) {
-      query._id = id; // Filter by specific _id
+      query._id = id;
     }
 
     const options = {
       page,
       limit: per_page,
-      lean: true,
-      sort: { createdAt: -1 }, // Sort by newest first
+      lean: true, // Important: lean returns plain JS objects so we can modify them
+      sort: { createdAt: -1 },
+      populate: {
+        path: 'user_id',
+        select: '-password'
+      }
     };
 
-    // Execute paginated query with filters
+    // Run paginated query
     const paginationResult = await Order.paginate(query, options);
-    const data = formatPaginationResponse(paginationResult, params, req);
 
+    // Rename user_id to customer
+    paginationResult.docs = paginationResult.docs.map(order => {
+      order.customer = order.user_id;
+      delete order.user_id;
+      return order;
+    });
+
+    const data = formatPaginationResponse(paginationResult, params, req);
     return { success: true, ...data };
 
   } catch (error) {
