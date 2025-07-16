@@ -9,57 +9,59 @@ export const bestSellingProductsService = async (req) => {
     const skip = (page - 1) * per_page;
 
     const topProducts = await OrderProduct.aggregate([
-      {
-        $group: {
-          _id: '$product_id',
-          total_sold: { $sum: '$quantity' }
-        }
+  {
+    $group: {
+      _id: '$product_id',
+      sales: { $sum: '$quantity' }
+    }
+  },
+  { $sort: { sales: -1 } },
+  { $skip: skip },
+  { $limit: per_page },
+  {
+    $lookup: {
+      from: 'products',
+      localField: '_id',
+      foreignField: '_id',
+      as: 'product'
+    }
+  },
+  { $unwind: '$product' },
+  {
+    $lookup: {
+      from: 'categories',
+      localField: 'product.category_id',
+      foreignField: '_id',
+      as: 'category'
+    }
+  },
+  { $unwind: { path: '$category', preserveNullAndEmptyArrays: true } },
+  {
+    $project: {
+      id: '$product._id',
+      name: '$product.name',
+      description: '$product.description',
+      image: null, // You can modify this if needed
+      price: '$product.price',
+      category_id: '$product.category_id',
+      status: '$product.status',
+      cost_price: '$product.cost_price',
+      stock_quantity: '$product.stock_quantity',
+      sales: '$sales',
+      arrival_status: '$product.arrival_status',
+      created_at: '$product.created_at',
+      updated_at: '$product.updated_at',
+      orders_count: '$product.orders_count',
+      reviews_count: '$product.reviews_count',
+      reviews_avg_rating: '$product.reviews_avg_rating',
+      category: {
+        id: '$category._id',
+        name: '$category.name'
       },
-      { $sort: { total_sold: -1 } },
-      { $skip: skip },
-      { $limit: per_page },
-      {
-        $lookup: {
-          from: 'products',
-          let: { productId: '$_id' },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: ['$_id', '$$productId'] }
-              }
-            },
-            {
-              $project: {
-                name: 1,
-                media: 1,
-                price: 1,
-                _id: 0
-              }
-            }
-          ],
-          as: 'product_details'
-        }
-      },
-      { $unwind: '$product_details' },
-      {
-        $project: {
-          product_id: { $toString: '$_id' },
-          name: '$product_details.name',
-          media: {
-            $let: {
-              vars: {
-                firstMedia: { $arrayElemAt: ['$product_details.media', 0] }
-              },
-              in: '$$firstMedia.file_path'
-            }
-          },
-          price: '$product_details.price',
-          total_sold: 1,
-          _id: 0
-        }
-      }
-    ]);
-
+      media: '$product.media' // entire array
+    }
+  }
+]);
     // Get total count
     const totalCountAgg = await OrderProduct.aggregate([
       {
@@ -86,7 +88,7 @@ export const bestSellingProductsService = async (req) => {
 
     return {
       success: true,
-      ...data
+      data
     };
 
   } catch (error) {
