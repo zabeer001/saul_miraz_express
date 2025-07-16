@@ -36,7 +36,11 @@ export const productIndexService = async (req) => {
       page,
       limit: per_page,
       lean: true,
-      sort: { createdAt: -1 }, // Sort by newest first
+      sort: { createdAt: -1 },
+      populate: {
+        path: 'category_id',
+        select: 'name', // or leave out select to get all category fields
+      },
     };
 
     // Execute paginated query with filters

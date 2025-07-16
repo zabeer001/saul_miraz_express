@@ -21,7 +21,15 @@ const userSchema = new mongoose.Schema({
         },
         minlength: 6, // optional: for basic validation
     },
-    
+    phone: {
+        type: String,
+        trim: true,
+    },
+    image: {
+        type: String,
+        trim: true,
+    },
+
     role: {
         type: String,
         required: true,
