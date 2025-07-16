@@ -5,10 +5,23 @@ class PromoCodeController {
     // Create
     static async store(req, res) {
         try {
-            const promoCode = await PromoCode.create(req.body);
-            return res.status(201).json({ message: 'Promo code created successfully', data: promoCode });
+            const data = {
+                ...req.body,
+                usage_limit: Number(req.body.usage_limit),
+                amount: Number(req.body.amount),
+            };
+
+            const promoCode = await PromoCode.create(data);
+
+            return res.status(201).json({
+                message: 'Promo code created successfully',
+                data: promoCode,
+            });
         } catch (error) {
-            return res.status(500).json({ message: 'Failed to create promo code', error: error.message });
+            return res.status(500).json({
+                message: 'Failed to create promo code',
+                error: error.message,
+            });
         }
     }
 
@@ -95,10 +108,10 @@ class PromoCodeController {
     }
 
     static async stats(req, res) {
-  
+
         try {
-            
-            
+
+
             const stats = await PromoCode.aggregate([
                 {
                     $group: {
