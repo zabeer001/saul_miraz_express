@@ -82,19 +82,24 @@ static async indexByType(req, res) {
   }
 
   static async update(req, res) {
-    try {
-      const result = await updateService(req.params.id, req.body);
-      return res.status(200).json({
-        message: 'Category updated successfully',
-        data: result,
-      });
-    } catch (error) {
-      return res.status(400).json({
-        message: 'Failed to update category',
-        error: error.message,
-      });
-    }
+  try {
+    const result = await updateService({
+      id: req.params.id,
+      ...req.body,
+      files: req.files || null, // Pass uploaded files if available
+    });
+
+    return res.status(200).json({
+      message: 'Category updated successfully',
+      data: result,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Failed to update category',
+      error: error.message,
+    });
   }
+}
 
   static async destroy(req, res) {
     try {

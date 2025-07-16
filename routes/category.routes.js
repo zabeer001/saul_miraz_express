@@ -15,7 +15,9 @@ categoryRouter.post('/', upload.fields([
 
 categoryRouter.get('/', CategoryController.index);
 categoryRouter.get('/:id', CategoryController.show);
-categoryRouter.put('/:id', upload.none()  , authenticate , isAdmin , CategoryController.update);
+categoryRouter.put('/:id', upload.fields([
+  { name: 'image', maxCount: 1 },
+]) , authenticate , isAdmin , CategoryController.update);
 categoryRouter.delete('/:id', authenticate , isAdmin , CategoryController.destroy); // use 'destroy' to avoid 'delete' conflict
 
 export default categoryRouter;
