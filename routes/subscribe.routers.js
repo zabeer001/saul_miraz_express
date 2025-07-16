@@ -1,10 +1,11 @@
 import express from 'express';
-
-import upload from '../helpers/multer.js';
 import SubscriberController from '../controllers/SubscriberController.js';
+import upload from '../helpers/multer.js';
+import { authenticate } from '../middleware/authMiddleware.js';
+import { isAdmin } from '../middleware/adminMiddleware.js';
 
-const stripeRouter = express.Router();
+const subscribeRouter = express.Router();
 
-stripeRouter.post('/email', upload.none(), SubscriberController.sendSubscriptionMail);
+subscribeRouter.post('/email', upload.none(), SubscriberController.sendSubscriptionMail);
 
-export default stripeRouter;
+export default subscribeRouter;

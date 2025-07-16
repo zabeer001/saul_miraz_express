@@ -1,63 +1,62 @@
 import mongoose from 'mongoose';
-import { faker } from '@faker-js/faker';
 import Category from '../models/category.model.js';
 import Product from '../models/product.model.js';
 
-// Product statuses
-const statuses = ['active', 'inactive', 'discontinued'];
-const arrivalStatuses = ['regular', 'new', 'featured'];
+// Static media array (same for all products)
+const fixedMedia = [
+  {
+    _id: new mongoose.Types.ObjectId("687763fdd2932a40b01b08b8"),
+    file_path: "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752654844/products/iqiwpzwy0fqcro6gquzu.webp",
+    alt: "pexels-photo-771742.webp",
+    order: 0
+  },
+  {
+    _id: new mongoose.Types.ObjectId("687763fdd2932a40b01b08b9"),
+    file_path: "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752654844/products/bnvrdixqf07egeaoke7q.webp",
+    alt: "traveler-woman-arms-raised-triumph-260nw-2457990309.webp",
+    order: 1
+  }
+];
 
-// Function to generate a random product
-const generateProduct = (categoryId) => {
-  // Generate multiple media
-  const media = Array.from({ length: faker.number.int({ min: 1, max: 4 }) }).map((_, index) => ({
-    file_path: `uploads/${faker.image.urlLoremFlickr({ category: 'products' })}`,
-    alt: faker.commerce.productName(),
-    order: index,
-  }));
+// Function to generate a static product
+const generateProduct = (categoryId) => ({
+  name: "Sample Product",
+  description: "This is a sample product description.",
+  image: fixedMedia[0].file_path,
+  media: fixedMedia,
+  price: mongoose.Types.Decimal128.fromString("199.99"),
+  cost_price: mongoose.Types.Decimal128.fromString("150.00"),
+  stock_quantity: 50,
+  sales: 0,
+  category_id: categoryId,
+  status: "active",
+  arrival_status: "regular"
+});
 
-  return {
-    name: faker.commerce.productName(),
-    description: faker.commerce.productDescription(),
-    image: media[0]?.file_path || '', // First media used as primary thumbnail
-    media, // Full array of media
-    price: mongoose.Types.Decimal128.fromString(faker.commerce.price({ min: 10, max: 500, dec: 2 })),
-    category_id: categoryId,
-    status: faker.helpers.arrayElement(statuses),
-    arrival_status: faker.helpers.arrayElement(arrivalStatuses),
-    cost_price: mongoose.Types.Decimal128.fromString(faker.commerce.price({ min: 10, max: 500, dec: 2 })),
-    stock_quantity: faker.number.int({ min: 1, max: 100 }),
-    sales: faker.number.int({ min: 0, max: 50 }),
-  };
-};
-
-// Product seeder function
+// Seeder
 const productSeeder = async (numProducts = 150) => {
   try {
-    // Fetch all categories
     const categories = await Category.find();
-    if (categories.length === 0) {
-      console.error('No categories found. Please seed categories first.');
+    if (!categories.length) {
+      console.error("No categories found. Please seed categories first.");
       return;
     }
 
-    // Clear existing products
     await Product.deleteMany({});
-    console.log('Existing products cleared.');
+    console.log("Existing products cleared.");
 
-    // Generate products
     const products = [];
+
     for (let i = 0; i < numProducts; i++) {
-      const randomCategory = faker.helpers.arrayElement(categories);
+      const randomCategory = categories[i % categories.length]; // distribute evenly
       products.push(generateProduct(randomCategory._id));
     }
 
-    // Insert products
     await Product.insertMany(products);
     console.log(`${numProducts} products seeded successfully.`);
   } catch (error) {
-    console.error('Error seeding products:', error);
-    throw error; // Throw error to be caught by the mother seeder
+    console.error("Error seeding products:", error);
+    throw error;
   }
 };
 

@@ -13,6 +13,7 @@ import orderRouter from './routes/order.routes.js';
 import contactRouter from './routes/contact.router.js';
 import cors from 'cors';
 import stripeRouter from './routes/stripe.routes.js';
+import subscribeRouter from './routes/stripe.routes.js';
 
 
 
@@ -50,7 +51,7 @@ app.use('/api/contacts', contactRouter);
 
 app.use('/api/stripe', stripeRouter);
 
-// app.use('/api/subscribe', subscribeRouter);
+app.use('/api/subscribe', subscribeRouter);
 
 
 
