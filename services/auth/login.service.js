@@ -35,7 +35,7 @@ export const loginService = async ({ email, password }) => {
     });
 
     return {
-      user: {
+      data: {
         _id: user._id,
         name: user.name,
         email: user.email,
