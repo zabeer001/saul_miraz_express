@@ -83,10 +83,14 @@ static async indexByType(req, res) {
 
   static async update(req, res) {
   try {
+    // Ensure files are being received
+    console.log('Request files:', req.files); // Debug log
+    
+    
     const result = await updateService({
       id: req.params.id,
       ...req.body,
-      files: req.files || null, // Pass uploaded files if available
+      files: req.files || null,
     });
 
     return res.status(200).json({
@@ -94,6 +98,7 @@ static async indexByType(req, res) {
       data: result,
     });
   } catch (error) {
+    console.error('Update error:', error); // Detailed error logging
     return res.status(400).json({
       message: 'Failed to update category',
       error: error.message,
