@@ -54,7 +54,7 @@ class PromoCodeController {
 
             return res.status(200).json({
                 success: true,
-                ...data, // Spread data to match previous service response structure
+                data, // Spread data to match previous service response structure
             });
         } catch (error) {
             return res.status(500).json({ message: `Failed to fetch promo codes: ${error.message}` });
