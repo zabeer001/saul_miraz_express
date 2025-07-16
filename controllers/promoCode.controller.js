@@ -88,13 +88,29 @@ class PromoCodeController {
     // Update
     static async update(req, res) {
         try {
-            const promoCode = await PromoCode.findByIdAndUpdate(req.params.id, req.body, { new: true });
-            if (!promoCode) return res.status(404).json({ message: 'Promo code not found' });
-            return res.status(200).json({ message: 'Promo code updated successfully', data: promoCode });
+            const data = {
+                ...req.body,
+                usage_limit: req.body.usage_limit !== undefined ? Number(req.body.usage_limit) : undefined,
+                amount: req.body.amount !== undefined ? Number(req.body.amount) : undefined,
+            };
+
+            const promoCode = await PromoCode.findByIdAndUpdate(req.params.id, data, { new: true });
+
+            if (!promoCode)
+                return res.status(404).json({ message: 'Promo code not found' });
+
+            return res.status(200).json({
+                message: 'Promo code updated successfully',
+                data: promoCode,
+            });
         } catch (error) {
-            return res.status(500).json({ message: 'Failed to update promo code', error: error.message });
+            return res.status(500).json({
+                message: 'Failed to update promo code',
+                error: error.message,
+            });
         }
     }
+
 
     // Delete
     static async destroy(req, res) {
