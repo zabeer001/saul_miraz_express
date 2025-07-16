@@ -6,6 +6,7 @@ import upload from '../helpers/multer.js';
 
 const promoCodeRouter = express.Router();
 
+promoCodeRouter.get('/stats', PromoCodeController.stats);
 promoCodeRouter.post('/', upload.none(), authenticate, isAdmin, PromoCodeController.store);
 promoCodeRouter.get('/', PromoCodeController.index);
 promoCodeRouter.get('/:id', PromoCodeController.show);

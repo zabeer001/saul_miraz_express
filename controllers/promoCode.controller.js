@@ -93,6 +93,39 @@ class PromoCodeController {
             return res.status(500).json({ message: 'Failed to delete promo code', error: error.message });
         }
     }
+
+    static async stats(req, res) {
+  
+        try {
+            
+            const stats = await PromoCode.aggregate([
+                {
+                    $group: {
+                        _id: "$status",
+                        count: { $sum: 1 },
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        status: "$_id",
+                        count: 1,
+                    },
+                },
+            ]);
+
+            // Convert array to object: { "active": 2, "inactive": 1 }
+            const result = {};
+            stats.forEach(stat => {
+                result[stat.status] = stat.count;
+            });
+
+            res.json(result);
+        } catch (error) {
+            console.error("Error in stats:", error);
+            res.status(500).json({ message: "Server Error" });
+        }
+    }
 }
 
 export default PromoCodeController;
