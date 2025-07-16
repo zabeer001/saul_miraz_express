@@ -6,7 +6,7 @@ const categorySchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        unique: true, // Optional: prevent duplicate category names
+        unique: true,
     },
     description: {
         type: String,
@@ -15,7 +15,11 @@ const categorySchema = new mongoose.Schema({
     type: {
         type: String,
         trim: true,
-    }
+    },
+    image: {
+        type: String, // URL or file path to the image
+        trim: true,
+    },
 }, {
     timestamps: true,
 });

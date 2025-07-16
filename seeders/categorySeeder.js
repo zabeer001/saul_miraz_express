@@ -9,7 +9,8 @@ const generateCategories = () => {
     categories.push({
       name: `${faker.commerce.department()} ${i}`,
       description: faker.commerce.productDescription(),
-      type: faker.helpers.arrayElement(categoryTypes), // randomly pick a type
+      type: faker.helpers.arrayElement(categoryTypes),
+      image: faker.image.urlPicsumPhotos({ width: 640, height: 480 }), // generates a realistic image URL
     });
   }
   return categories;
