@@ -9,7 +9,10 @@ const categoryRouter = express.Router();
 
 categoryRouter.get('/by-type', CategoryController.indexByType);
 
-categoryRouter.post('/', upload.none() ,authenticate , isAdmin , CategoryController.store);
+categoryRouter.post('/', upload.fields([
+  { name: 'image', maxCount: 1 },
+]) ,authenticate , isAdmin , CategoryController.store);
+
 categoryRouter.get('/', CategoryController.index);
 categoryRouter.get('/:id', CategoryController.show);
 categoryRouter.put('/:id', upload.none()  , authenticate , isAdmin , CategoryController.update);
