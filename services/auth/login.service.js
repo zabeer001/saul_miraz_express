@@ -39,7 +39,9 @@ export const loginService = async ({ email, password }) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
+        phone: '012923',
+        image: 'ajksdbhasd',
       },
       token,
     };
