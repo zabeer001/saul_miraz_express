@@ -10,7 +10,7 @@ const generateCategories = () => {
       name: `${faker.commerce.department()} ${i}`,
       description: faker.commerce.productDescription(),
       type: faker.helpers.arrayElement(categoryTypes),
-      image: faker.image.urlPicsumPhotos({ width: 640, height: 480 }), // generates a realistic image URL
+      image: `https://res.cloudinary.com/dlmwnke6i/image/upload/v1752144354/products/f3fddmdmsxladec6iwkg.jpg`, // generates a realistic image URL
     });
   }
   return categories;

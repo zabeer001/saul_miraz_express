@@ -6,13 +6,13 @@ import Product from '../models/product.model.js';
 const fixedMedia = [
   {
     _id: new mongoose.Types.ObjectId("687763fdd2932a40b01b08b8"),
-    file_path: "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752654844/products/iqiwpzwy0fqcro6gquzu.webp",
+    file_path: "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752144354/products/f3fddmdmsxladec6iwkg.jpg",
     alt: "pexels-photo-771742.webp",
     order: 0
   },
   {
     _id: new mongoose.Types.ObjectId("687763fdd2932a40b01b08b9"),
-    file_path: "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752654844/products/bnvrdixqf07egeaoke7q.webp",
+    file_path: "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752144354/products/f3fddmdmsxladec6iwkg.jpg",
     alt: "traveler-woman-arms-raised-triumph-260nw-2457990309.webp",
     order: 1
   }
@@ -29,7 +29,7 @@ const generateProduct = (categoryId) => ({
   stock_quantity: 50,
   sales: 0,
   category_id: categoryId,
-  status: "active",
+  status: "avaiable",
   arrival_status: "regular"
 });
 
