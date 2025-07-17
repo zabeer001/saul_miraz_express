@@ -17,7 +17,7 @@ export const productShowService = async (id) => {
     product.category = product.category_id;
     delete product.category_id;
 
-    // Add dummy reviews field
+    // Add dummy reviews fieldas
     product.reviews = [];
 
     return {
