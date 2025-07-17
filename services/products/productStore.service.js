@@ -7,7 +7,7 @@ export const productStoreService = async (req) => {
   const body = req.body || {};
   const files = req.files || {};
 
-  const {
+  let {
     name,
     description = null,
     price,
@@ -24,16 +24,28 @@ export const productStoreService = async (req) => {
   if (!category) throw new Error('Category not found');
 
   // Upload main image (if any)
- const uploadedImage = await uploadSingleImage(files, 'image');
+  const uploadedImage = await uploadSingleImage(files, 'image');
 
   // Upload gallery images (if any) using a helper like updateMultipleImages, but for new uploads
 
   // Upload gallery media (if any) using a helper like updateMultipleImages, but for new uploads
-  
-// let uploadedMedia = [];
-if (files['media']) {
-  var uploadedMedia = await uploadMultipleMedia(files['media'], 'products');
-}
+
+  // let uploadedMedia = [];
+  if (files['media']) {
+    var uploadedMedia = await uploadMultipleMedia(files['media'], 'products');
+  }
+
+  if (status === "coming_soon" || status === "regular") {
+    arrival_status = status;
+  }
+
+  if (stock_quantity > 10) {
+    status = "available";
+  } else if (stock_quantity === 0) {
+    status = "out_of_stock";
+  } else if (stock_quantity > 0 && stock_quantity <= 10) {
+    status = "low_stock";
+  }
 
   // Create product with uploaded image URLs and fields
 
