@@ -34,7 +34,7 @@ export const productIndexService = async (req) => {
     }
 
     if (arrival_status) {
-      query.arrival_status = arrival_status;
+      query.status = arrival_status;
     }
 
     if (params.id) {
