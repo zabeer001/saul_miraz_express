@@ -6,13 +6,13 @@ import Product from '../models/product.model.js';
 const fixedMedia = [
   {
     _id: new mongoose.Types.ObjectId("687763fdd2932a40b01b08b8"),
-    file_path: "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752144354/products/f3fddmdmsxladec6iwkg.jpg",
+    file_path: "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752750026/pngtree-makeup-products-and-products-are-laid-out-image_2880996_jrbrnr.jpg",
     alt: "pexels-photo-771742.webp",
     order: 0
   },
   {
     _id: new mongoose.Types.ObjectId("687763fdd2932a40b01b08b9"),
-    file_path: "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752144354/products/f3fddmdmsxladec6iwkg.jpg",
+    file_path: "https://res.cloudinary.com/dlmwnke6i/image/upload/v1752750026/pngtree-makeup-products-and-products-are-laid-out-image_2880996_jrbrnr.jpg",
     alt: "traveler-woman-arms-raised-triumph-260nw-2457990309.webp",
     order: 1
   }
@@ -34,7 +34,7 @@ const generateProduct = (categoryId) => ({
 });
 
 // Seeder
-const productSeeder = async (numProducts = 1) => {
+const productSeeder = async (numProducts = 100) => {
   try {
     const categories = await Category.find();
     if (!categories.length) {

@@ -2,7 +2,9 @@ import Product from "../../models/product.model.js";
 
 export const productShowService = async (id) => {
   try {
-    const product = await Product.findById(id).lean();
+    const product = await Product.findById(id)
+      .populate("category_id")
+      .lean();
 
     if (!product) {
       return {
@@ -10,6 +12,13 @@ export const productShowService = async (id) => {
         message: "Product not found",
       };
     }
+
+    // Transform category_id → category
+    product.category = product.category_id;
+    delete product.category_id;
+
+    // Add dummy reviews field
+    product.reviews = [];
 
     return {
       success: true,
