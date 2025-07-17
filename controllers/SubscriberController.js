@@ -10,3 +10,5 @@ class SubscriberController {
 }
 
 export default SubscriberController;
+
+

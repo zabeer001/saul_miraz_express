@@ -1,5 +1,6 @@
 import { formatPaginationResponse } from "../../helpers/formatPaginationResponse.js";
 import Order from "../../models/order.model.js";
+import mongoose from 'mongoose';
 
 export const orderIndexService = async (req) => {
   try {
@@ -14,11 +15,13 @@ export const orderIndexService = async (req) => {
     const query = {};
 
     if (search) {
-      query.$or = [
-        { orderNumber: { $regex: search, $options: 'i' } },
-        { customerEmail: { $regex: search, $options: 'i' } },
-      ];
+      query.$or = [];
+      // Check if search is a valid ObjectId
+      if (mongoose.Types.ObjectId.isValid(search)) {
+        query.$or.push({ _id: search });
+      }
     }
+
 
     if (status) {
       query.status = status;

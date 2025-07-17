@@ -7,6 +7,7 @@ export const productIndexService = async (req) => {
     const params = req.query;
     const search = (params.search || params.serach)?.trim() || '';
     const status = params.status;
+    const arrival_status = params.arrival_status;
     const page = parseInt(params?.page, 10) ?? 1;
     const per_page = parseInt(params?.paginate_count, 10) ?? 10;
 
@@ -30,6 +31,10 @@ export const productIndexService = async (req) => {
 
     if (status) {
       query.status = status;
+    }
+
+    if (arrival_status) {
+      query.arrival_status = arrival_status;
     }
 
     if (params.id) {
