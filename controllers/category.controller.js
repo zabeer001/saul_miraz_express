@@ -7,9 +7,14 @@ import { storeService } from '../services/categories/store.service.js';
 import Category from '../models/category.model.js';
 
 class CategoryController {
+
   static async store(req, res) {
     try {
-      const result = await storeService(req.body);
+      const result = await storeService({
+        ...req.body,
+        files: req.files, // ✅ Pass files explicitly
+      });
+
       return res.status(201).json({
         message: 'Category created successfully',
         data: result,
@@ -21,6 +26,7 @@ class CategoryController {
       });
     }
   }
+
 
   static async index(req, res) {
     try {
@@ -38,34 +44,34 @@ class CategoryController {
   }
 
 
-static async indexByType(req, res) {
-  try {
-    const items = await Category.find(); // fetch all documents
+  static async indexByType(req, res) {
+    try {
+      const items = await Category.find(); // fetch all documents
 
-    // Grouping logic
-    const grouped = {};
-    for (const item of items) {
-      const type = item.type || 'Unknown';
-      if (!grouped[type]) {
-        grouped[type] = [];
+      // Grouping logic
+      const grouped = {};
+      for (const item of items) {
+        const type = item.type || 'Unknown';
+        if (!grouped[type]) {
+          grouped[type] = [];
+        }
+        grouped[type].push(item);
       }
-      grouped[type].push(item);
+
+      return res.status(200).json({
+        success: true,
+        ...grouped,
+      });
+
+    } catch (error) {
+      console.error('Error in indexByType:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Server Error',
+        error: error.message,
+      });
     }
-
-    return res.status(200).json({
-      success: true,
-      ...grouped,
-    });
-
-  } catch (error) {
-    console.error('Error in indexByType:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Server Error',
-      error: error.message,
-    });
   }
-}
 
 
 
@@ -82,29 +88,29 @@ static async indexByType(req, res) {
   }
 
   static async update(req, res) {
-  try {
-    // Ensure files are being received
-    console.log('Request files:', req.files); // Debug log
-    
-    
-    const result = await updateService({
-      id: req.params.id,
-      ...req.body,
-      files: req.files || null,
-    });
+    try {
+      // Ensure files are being received
+      console.log('Request files:', req.files); // Debug log
 
-    return res.status(200).json({
-      message: 'Category updated successfully',
-      data: result,
-    });
-  } catch (error) {
-    console.error('Update error:', error); // Detailed error logging
-    return res.status(400).json({
-      message: 'Failed to update category',
-      error: error.message,
-    });
+
+      const result = await updateService({
+        id: req.params.id,
+        ...req.body,
+        files: req.files || null,
+      });
+
+      return res.status(200).json({
+        message: 'Category updated successfully',
+        data: result,
+      });
+    } catch (error) {
+      console.error('Update error:', error); // Detailed error logging
+      return res.status(400).json({
+        message: 'Failed to update category',
+        error: error.message,
+      });
+    }
   }
-}
 
   static async destroy(req, res) {
     try {

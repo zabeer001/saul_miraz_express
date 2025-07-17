@@ -1,32 +1,44 @@
-import Product from "../../models/product.model.js"; // import Product model
+import Product from "../../models/product.model.js";
 import { formatPaginationResponse } from "../../helpers/formatPaginationResponse.js";
+import mongoose from "mongoose";
 
 export const productIndexService = async (req) => {
   try {
     const params = req.query;
-    const search = params.search?.trim();
+    const search = (params.search || params.serach)?.trim() || '';
     const status = params.status;
-    const id = params.id;
-
     const page = parseInt(params?.page, 10) ?? 1;
     const per_page = parseInt(params?.paginate_count, 10) ?? 10;
 
     // Build query object for filtering
     const query = {};
 
+    // console.log(req.query);
+
     if (search) {
-      query.$or = [
+      query.$or = [];
+      // Check if search is a valid ObjectId
+      if (mongoose.Types.ObjectId.isValid(search)) {
+        query.$or.push({ _id: search });
+      }
+      // Always include name and description searches
+      query.$or.push(
         { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-      ];
+        { description: { $regex: search, $options: 'i' } }
+      );
     }
 
     if (status) {
       query.status = status;
     }
 
-    if (id) {
-      query._id = id;
+    if (params.id) {
+      query._id = params.id; // Separate id query param if provided
+    }
+
+    // Remove $or if empty to avoid MongoDB query errors
+    if (query.$or && query.$or.length === 0) {
+      delete query.$or;
     }
 
     const options = {
@@ -36,24 +48,21 @@ export const productIndexService = async (req) => {
       sort: { createdAt: -1 },
       populate: {
         path: 'category_id',
-        select: 'name', // add more fields if needed
+        select: 'name',
       },
     };
 
     const paginationResult = await Product.paginate(query, options);
 
     // Format category info
-    paginationResult.docs = paginationResult.docs.map((doc) => {
-      return {
-        ...doc,
-        category: doc.category_id,               // full populated category object
-        category_id: doc.category_id?._id || null, // retain only ObjectId
-      };
-    });
+    paginationResult.docs = paginationResult.docs.map((doc) => ({
+      ...doc,
+      category: doc.category_id,
+      category_id: doc.category_id?._id || null,
+    }));
 
     const data = formatPaginationResponse(paginationResult, params, req);
     return { success: true, ...data };
-
   } catch (error) {
     throw new Error(`Failed to fetch products: ${error.message}`);
   }

@@ -2,6 +2,9 @@ import Category from '../../models/category.model.js';
 import { uploadSingleImage } from '../../helpers/uploadSingleImage.js'; // Adjust path if needed
 
 export const storeService = async ({ name, description, files ,type }) => {
+
+  console.log(files);
+  
   const existing = await Category.findOne({ name });
   if (existing) {
     throw new Error('Category name already exists');

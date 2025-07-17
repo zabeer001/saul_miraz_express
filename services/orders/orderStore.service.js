@@ -73,6 +73,8 @@ export const orderStoreService = async (req) => {
 
   // Sync products to OrderProduct pivot table
   const syncResult = await syncOrderProducts(order._id, products);
+  console.log(syncResult);
+  
   if (!syncResult.success) {
     throw new Error(syncResult.message);
   }

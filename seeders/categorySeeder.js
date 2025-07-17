@@ -5,7 +5,7 @@ const categoryTypes = ['physical', 'digital', 'service', 'subscription'];
 
 const generateCategories = () => {
   const categories = [];
-  for (let i = 1; i <= 20; i++) {
+  for (let i = 1; i <= 0; i++) {
     categories.push({
       name: `${faker.commerce.department()} ${i}`,
       description: faker.commerce.productDescription(),

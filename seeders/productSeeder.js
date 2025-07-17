@@ -47,7 +47,8 @@ const productSeeder = async (numProducts = 150) => {
 
     const products = [];
 
-    for (let i = 0; i < numProducts; i++) {
+    // for (let i = 0; i < numProducts; i++) {
+     for (let i = 0; i < 0; i++) {
       const randomCategory = categories[i % categories.length]; // distribute evenly
       products.push(generateProduct(randomCategory._id));
     }
