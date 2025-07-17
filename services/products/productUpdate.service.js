@@ -46,7 +46,7 @@ export const productUpdateService = async (req, productId) => {
       product.image = await updateSingleImage(files['image'][0], product.image);
     }
 
-    
+
 
     // Update the product’s gallery media if new media files are provided
 
@@ -77,6 +77,19 @@ export const productUpdateService = async (req, productId) => {
     // name = 'egal'; you can change the data 
 
     // Define fields to update with values from request body
+
+    if (status === "coming_soon" || status === "regular") {
+      arrival_status = status;
+    }
+
+    if (stock_quantity > 10) {
+      status = "available";
+    } else if (stock_quantity === 0) {
+      status = "out_of_stock";
+    } else if (stock_quantity > 0 && stock_quantity <= 10) {
+      status = "low_stock";
+    }
+    
     const fieldsToUpdate = {
       name,
       description,
