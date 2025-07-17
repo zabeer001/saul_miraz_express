@@ -4,7 +4,7 @@ import Order from "../../models/order.model.js";
 export const orderIndexService = async (req) => {
   try {
     const params = req.query;
-    const search = params.search?.trim();
+    const search = (params.search || params.serach)?.trim() || '';
     const status = params.status;
     const id = params.id;
 

@@ -11,7 +11,7 @@ const generateOrders = () => {
     const paymentMethods = ['cash', 'credit_card', 'paypal'];
     const paymentStatuses = ['unpaid', 'paid'];
 
-    for (let i = 1; i <= 30; i++) {
+    for (let i = 1; i <= 0; i++) {
         const shippingPrice = faker.number.float({ min: 0, max: 100, precision: 0.01 });
         const total = faker.number.float({ min: 100, max: 1000, precision: 0.01 });
 

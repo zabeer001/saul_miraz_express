@@ -4,7 +4,7 @@ import { formatPaginationResponse } from "../../helpers/formatPaginationResponse
 export const indexService = async (req) => {
   try {
     const params = req.query;
-    const search = params.search?.trim(); // Get and trim search query for name
+ const search = (params.search || params.serach)?.trim() || '';
     const status = params.status; // Get status filter (e.g., 'active', 'inactive')
     const id = params.id; // Get _id filter (e.g., '6871faa1dc12bd7ece0e3ff4')
 

@@ -43,7 +43,7 @@ class ProductController {
       return res.status(200).json(result);
     } catch (error) {
       return res.status(404).json({
-        message: 'Category not found',
+        message: 'Data not found',
         error: error.message,
       });
     }
@@ -70,12 +70,12 @@ class ProductController {
     try {
       const result = await productDestroyService(req.params.id);
       return res.status(200).json({
-        message: 'Category deleted successfully',
+        message: 'Data deleted successfully',
         data: result,
       });
     } catch (error) {
       return res.status(500).json({
-        message: 'Failed to delete category',
+        message: 'Failed to delete Data',
         error: error.message,
       });
     }
@@ -85,12 +85,12 @@ class ProductController {
     try {
       const result = await productStatsService(req);
       return res.status(200).json({
-        message: 'Category deleted successfully',
+        message: 'Data deleted successfully',
         ...result,
       });
     } catch (error) {
       return res.status(500).json({
-        message: 'Failed to delete category',
+        message: 'Failed to delete Data',
         error: error.message,
       });
     }
