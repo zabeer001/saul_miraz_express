@@ -26,8 +26,6 @@ const runAllSeeders = async () => {
     await orderSeeder();
     await orderProductSeeder();
     await contactSeeder();
-    await productSeeder();
-
 
     console.log('All seeders completed');
 

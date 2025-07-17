@@ -1,7 +1,9 @@
 import Product from "../../models/product.model.js";
+import Review from "../../models/review.model.js";
 
 export const productShowService = async (id) => {
   try {
+    // Find the product by ID and populate category
     const product = await Product.findById(id)
       .populate("category_id")
       .lean();
@@ -13,13 +15,19 @@ export const productShowService = async (id) => {
       };
     }
 
-    // Transform category_id → category
+    // Fetch reviews associated with this product
+    const reviews = await Review.find({ product_id: id })
+      .populate("user") // populate user data via virtual
+      .lean();
+
+    // Transform data
     product.category = product.category_id;
     delete product.category_id;
 
     product.id = product._id;
-    // Add dummy reviews fieldas
-    product.reviews = [];
+
+    // Attach reviews (populated)
+    product.reviews = reviews;
 
     return {
       success: true,
