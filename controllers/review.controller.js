@@ -7,11 +7,13 @@ class ReviewController {
     static async store(req, res) {
         try {
             const { product_id, comment, rating } = req.body;
-            const user_id = req.user?._id;
+            const user_id = req.authUser;
 
             if (!product_id || !comment || !rating) {
                 return res.status(400).json({ success: false, message: 'All fields are required.' });
             }
+            console.log(user_id);
+
 
             const review = await Review.create({
                 product_id,

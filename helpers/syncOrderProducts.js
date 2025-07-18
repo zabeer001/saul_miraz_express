@@ -48,7 +48,7 @@ export const syncOrderProducts = async (orderId, products = []) => {
       message: 'Order products synced successfully',
     };
   } catch (error) {
-    console.error('syncOrderProducts error:', error.message, error.stack);
+    // console.error('syncOrderProducts error:', error.message, error.stack);
     return {
       success: false,
       message: `Failed to sync order products: ${error.message}`,
