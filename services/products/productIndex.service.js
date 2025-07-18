@@ -14,14 +14,15 @@ export const productIndexService = async (req) => {
     // Build query object for filtering
     const query = {};
 
-    // console.log(req.query);
-
+    // Handle search logic
     if (search) {
       query.$or = [];
+
       // Check if search is a valid ObjectId
       if (mongoose.Types.ObjectId.isValid(search)) {
         query.$or.push({ _id: search });
       }
+
       // Always include name and description searches
       query.$or.push(
         { name: { $regex: search, $options: 'i' } },
@@ -29,19 +30,20 @@ export const productIndexService = async (req) => {
       );
     }
 
+    // Apply filters
     if (status) {
       query.status = status;
     }
 
     if (arrival_status) {
-      query.status = arrival_status;
+      query.arrival_status = arrival_status;
     }
 
     if (params.id) {
       query._id = params.id; // Separate id query param if provided
     }
 
-    // Remove $or if empty to avoid MongoDB query errors
+    // Clean up empty $or to avoid MongoDB errors
     if (query.$or && query.$or.length === 0) {
       delete query.$or;
     }

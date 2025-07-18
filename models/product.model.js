@@ -49,6 +49,10 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 1,
     },
+    arrival_status: {
+        type: String,
+        default: 'regular',
+    },
     sales: {
         type: Number,
         default: 0,

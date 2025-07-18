@@ -4,11 +4,19 @@ import { hashMultiplePasswords } from '../helpers/index.js';
 const generateUsers = () => {
   const users = [
     {
-      "_id": "68637e46c62fca563bed6dff",
+     
       "name": "Admin User",
       "email": "admin@gmail.com",
       "password": "12345678",
       "role": "admin"
+
+    },
+     {
+   
+      "name": "Admin User",
+      "email": "user@gmail.com",
+      "password": "12345678",
+      "role": "user"
 
     },
   ];
