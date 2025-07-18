@@ -124,6 +124,39 @@ class ReviewController {
             return res.status(500).json({ success: false, message: error.message });
         }
     }
+
+    static async homePage(req, res) {
+        try {
+            const params = req.query;
+            const page = parseInt(params?.page, 10) || 1;
+            const per_page = parseInt(params?.paginate_count, 10) || 10;
+
+            const filter = { rating: 5 };
+
+            const options = {
+                page,
+                limit: per_page,
+                sort: { createdAt: -1 },
+                lean: true,
+            };
+
+            const paginationResult = await Review.paginate(filter, options);
+
+            const data = formatPaginationResponse(paginationResult, params, req);
+
+            return res.status(200).json({
+                success: true,
+                data: data,  // same standard as your index method
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Failed to fetch latest 5-star reviews",
+                error: error.message,
+            });
+        }
+    }
+
 }
 
 export default ReviewController;
