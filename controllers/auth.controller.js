@@ -57,7 +57,7 @@ class AuthController {
 
       return res.json({
         message: 'Profile retrieved successfully',
-        user,
+        data: user,
       });
     } catch (err) {
       console.error('Profile fetch error:', err.message);

@@ -84,7 +84,7 @@ class OrderController {
     }
   }
 
-  static async orderStatsTable(req, res) {
+  static async orderStats(req, res) {
     try {
       const result = await orderStatsService(req);
       return res.status(200).json({
