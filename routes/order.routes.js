@@ -9,7 +9,7 @@ const orderRouter = express.Router();
 
 orderRouter.get('/stats', authenticate, isAdmin, OrderController.orderStats);
 
-orderRouter.get('/best-selling-products', authenticate, isAdmin, OrderController.bestSellingProducts);
+orderRouter.get('/best-selling-products' , OrderController.bestSellingProducts);
 
 
 orderRouter.post('/', upload.none(), authenticate, OrderController.store);
