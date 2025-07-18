@@ -114,6 +114,7 @@ class CategoryController {
 
   static async destroy(req, res) {
     try {
+      // return ({  message: 'response came here',});
       const result = await destroyService(req.params.id);
       return res.status(200).json({
         message: 'Category deleted successfully',

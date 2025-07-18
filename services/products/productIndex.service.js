@@ -10,6 +10,7 @@ export const productIndexService = async (req) => {
     const arrival_status = params.arrival_status;
     const page = parseInt(params?.page, 10) ?? 1;
     const per_page = parseInt(params?.paginate_count, 10) ?? 10;
+    const category = params.category;
 
     // Build query object for filtering
     const query = {};
@@ -35,6 +36,25 @@ export const productIndexService = async (req) => {
       query.status = status;
     }
 
+    if (category) {
+      if (mongoose.Types.ObjectId.isValid(category)) {
+        // If it's a valid ObjectId, filter directly by category_id
+        query.category_id = category;
+      } else {
+        // Otherwise, try to find a category by name (case-insensitive)
+        const categoryDoc = await mongoose.model("Category").findOne({
+          name: { $regex: category, $options: "i" },
+        });
+
+        if (!categoryDoc) {
+          throw new Error(`No category found with name: ${category}`);
+        }
+
+        query.category_id = categoryDoc._id;
+      }
+    }
+
+    
     if (arrival_status) {
       query.arrival_status = arrival_status;
     } else {
