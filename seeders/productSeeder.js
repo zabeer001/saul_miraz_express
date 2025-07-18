@@ -34,7 +34,7 @@ const generateProduct = (categoryId) => ({
 });
 
 // Seeder
-const productSeeder = async (numProducts = 100) => {
+const productSeeder = async (numProducts = 35) => {
   try {
     const categories = await Category.find();
     if (!categories.length) {

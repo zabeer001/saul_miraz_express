@@ -5,7 +5,7 @@ const types = ['Collections', 'Skincare']; // Fixed category type options
 
 const generateCategories = () => {
   const categories = [];
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 35; i++) {
     categories.push({
       name: `${faker.commerce.department()} ${i}`,
       description: faker.commerce.productDescription(),

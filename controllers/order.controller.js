@@ -1,4 +1,6 @@
+import Order from "../models/order.model.js";
 import { bestSellingProductsService } from "../services/orders/bestSellingProducts.service.js";
+import { orderCustomersService } from "../services/orders/orderCustomersService.js";
 import { orderDestroyService } from "../services/orders/orderDestroy.service.js";
 import { orderIndexService } from "../services/orders/orderIndex.service.js";
 import { orderShowService } from "../services/orders/orderShow.service.js";
@@ -14,7 +16,7 @@ class OrderController {
 
       const result = await orderStoreService(req);
       return res.status(201).json({
-          message: 'daata retrived successfully',
+        message: 'daata retrived successfully',
         data: result
       });
     } catch (error) {
@@ -112,6 +114,21 @@ class OrderController {
       });
     }
 
+  }
+
+   static async customers(req, res) {
+    try {
+      const result = await orderCustomersService(req);
+      return res.status(200).json({
+        message: "Customers retrieved successfully",
+        data: result,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Failed to retrieve customers",
+        error: error.message,
+      });
+    }
   }
 }
 

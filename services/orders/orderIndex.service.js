@@ -9,32 +9,36 @@ export const orderIndexService = async (req) => {
     const status = params.status;
     const id = params.id;
 
-    const page = parseInt(params?.page, 10) ?? 1;
-    const per_page = parseInt(params?.paginate_count, 10) ?? 10;
+    const page = Number.isInteger(parseInt(params?.page, 10)) ? parseInt(params.page, 10) : 1;
+    const per_page = Number.isInteger(parseInt(params?.paginate_count, 10)) ? parseInt(params.paginate_count, 10) : 10;
 
     const query = {};
 
     if (search) {
       query.$or = [];
-      // Check if search is a valid ObjectId
       if (mongoose.Types.ObjectId.isValid(search)) {
-        query.$or.push({ _id: search });
+        query.$or.push({ _id: mongoose.Types.ObjectId(search) });
       }
+      query.$or.push({ order_summary: { $regex: search, $options: "i" } });
+      // Add other searchable fields here if needed
     }
 
-
     if (status) {
-      query.status = status;
+      query.status = new RegExp(`^${status}$`, 'i'); // case-insensitive exact match
     }
 
     if (id) {
-      query._id = id;
+      if (mongoose.Types.ObjectId.isValid(id)) {
+        query._id = mongoose.Types.ObjectId(id);
+      } else {
+        throw new Error("Invalid order ID");
+      }
     }
 
     const options = {
       page,
       limit: per_page,
-      lean: true, // Important: lean returns plain JS objects so we can modify them
+      lean: true,
       sort: { createdAt: -1 },
       populate: {
         path: 'user_id',
@@ -42,10 +46,9 @@ export const orderIndexService = async (req) => {
       }
     };
 
-    // Run paginated query
     const paginationResult = await Order.paginate(query, options);
 
-    // Rename user_id to customer
+    // Rename user_id to customer for clarity
     paginationResult.docs = paginationResult.docs.map(order => {
       order.customer = order.user_id;
       delete order.user_id;
