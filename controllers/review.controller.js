@@ -129,7 +129,7 @@ class ReviewController {
         try {
             const params = req.query;
             const page = parseInt(params?.page, 10) || 1;
-            const per_page = parseInt(params?.paginate_count, 10) || 50;
+            const per_page = parseInt(params?.paginate_count, 10) || 10;
 
             const filter = { rating: 5 };
 
@@ -137,6 +137,9 @@ class ReviewController {
                 page,
                 limit: per_page,
                 sort: { createdAt: -1 },
+                 populate: [
+                    { path: 'user', select: '-password -__v' },
+                ],
                 lean: true,
             };
 
