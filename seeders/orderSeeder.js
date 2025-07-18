@@ -21,7 +21,7 @@ const generateOrders = (userIds) => {
   const sixMonthsAgo = new Date();
   sixMonthsAgo.setMonth(now.getMonth() - 6);
 
-  for (let i = 1; i <= 50; i++) {
+  for (let i = 1; i <= 1; i++) {
     const createdAt = getRandomDate(sixMonthsAgo, now);
     // updatedAt is equal or after createdAt, up to now
     const updatedAt = getRandomDate(createdAt, now);
