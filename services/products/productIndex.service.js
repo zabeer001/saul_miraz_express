@@ -37,6 +37,9 @@ export const productIndexService = async (req) => {
 
     if (arrival_status) {
       query.arrival_status = arrival_status;
+    } else {
+      // Exclude "coming_soon" if no arrival_status explicitly provided
+      query.arrival_status = { $ne: "coming_soon" };
     }
 
     if (params.id) {
