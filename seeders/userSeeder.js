@@ -1,5 +1,6 @@
 import User from '../models/user.model.js';
 import { hashMultiplePasswords } from '../helpers/index.js';
+import { faker } from '@faker-js/faker'; // <-- Import faker
 
 const generateRandomPhone = () => {
   const prefix = '01'; 
@@ -37,20 +38,20 @@ const generateUsers = () => {
     },
   ];
 
-  for (let i = 1; i <= 10; i++) {
-    users.push({
-      name: `User ${i}`,
-      email: `user${i}@example.com`,
-      password: `123456`,
-      phone: generateRandomPhone(),
-      role: 'user',
-      full_address: null,
-      city: null,
-      state: null,
-      postal_code: null,
-      country: null,
-    });
-  }
+ for (let i = 1; i <= 10; i++) {
+  users.push({
+    name: `User ${i}`,
+    email: `user${i}@example.com`,
+    password: `123456`,
+    phone: generateRandomPhone(),
+    role: 'user',
+    full_address: faker.location.streetAddress(),
+    city: faker.location.city(),
+    state: faker.location.state(),
+    postal_code: faker.location.zipCode(),
+    country: faker.location.country(),
+  });
+}
 
   return users;
 };
