@@ -2,7 +2,8 @@
 import { signUpService } from '../services/auth/signup.service.js';
 import { loginService } from '../services/auth/login.service.js';
 import { logoutService } from '../services/auth/logout.service.js';
-import {googleLogin} from '../services/auth/googleLogin.js';
+import { googleLogin } from '../services/auth/googleLogin.js';
+import { changeProfileDetailsService } from '../services/auth/changeProfileDetailsService.js';
 
 
 
@@ -67,16 +68,30 @@ class AuthController {
 
   static async loginWithGoogle(req, res) {
     try {
-        const result = await googleLogin(req.body);
-        return res.status(result.status).json(result);
+      const result = await googleLogin(req.body);
+      return res.status(result.status).json(result);
     } catch (error) {
-        console.error('Login error:', error);
-        return res.status(400).json({
-            message: 'Login failed',
-            error: error.message,
-        });
+      console.error('Login error:', error);
+      return res.status(400).json({
+        message: 'Login failed',
+        error: error.message,
+      });
     }
+  }
+
+static async changeProfileDetails(req, res) {
+  try {
+    const result = await changeProfileDetailsService(req);
+    return res.status(result.status).json(result);
+  } catch (error) {
+    console.error('Profile update error:', error);
+    return res.status(400).json({
+      message: 'Profile update failed',
+      error: error.message,
+    });
+  }
 }
+
 
 }
 

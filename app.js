@@ -15,6 +15,7 @@ import cors from 'cors';
 import stripeRouter from './routes/stripe.routes.js';
 import subscribeRouter from './routes/subscribe.routers.js';
 import customerRouter from './routes/order.routes.js';
+import generalRouter from './routes/general.router.js';
 
 
 
@@ -33,6 +34,8 @@ app.get('/', (req, res) => {
 });
 
 // app.use('/api/auth', authRouter);
+app.use('/api', generalRouter);
+
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/categories', categoryRouter);
