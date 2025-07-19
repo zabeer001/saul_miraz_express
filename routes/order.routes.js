@@ -13,8 +13,8 @@ orderRouter.get('/best-selling-products' , OrderController.bestSellingProducts);
 
 
 orderRouter.post('/', upload.none(), authenticate, OrderController.store);
-orderRouter.get('/', authenticate, isAdmin, OrderController.index);
-orderRouter.get('/:id', authenticate, isAdmin, OrderController.show);
+orderRouter.get('/', authenticate, OrderController.index);
+orderRouter.get('/:id', OrderController.show);
 orderRouter.put('/:id', upload.none(), authenticate, isAdmin, OrderController.update);
 orderRouter.delete('/:id', authenticate, isAdmin, OrderController.destroy);
 

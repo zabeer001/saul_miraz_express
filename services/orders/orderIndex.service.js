@@ -14,13 +14,22 @@ export const orderIndexService = async (req) => {
 
     const query = {};
 
+    // Filter by user if not admin
+    const authUser = req.authUser;
+    if (!authUser || !authUser._id) {
+      throw new Error('Unauthorized request');
+    }
+
+    if (authUser.role !== 'admin') {
+      query.user_id = authUser._id;
+    }
+
     if (search) {
       query.$or = [];
       if (mongoose.Types.ObjectId.isValid(search)) {
         query.$or.push({ _id: mongoose.Types.ObjectId(search) });
       }
       query.$or.push({ order_summary: { $regex: search, $options: "i" } });
-      // Add other searchable fields here if needed
     }
 
     if (status) {
