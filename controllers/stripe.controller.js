@@ -74,6 +74,7 @@ class StripeController {
 
         try {
             const session = await stripe.checkout.sessions.retrieve(sessionId);
+            
 
             if (session.payment_status === 'paid') {
                 const orderId = session.metadata.order_id;
