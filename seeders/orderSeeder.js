@@ -41,8 +41,16 @@ const generateOrders = (userIds) => {
       promocode_id: faker.datatype.boolean() ? new mongoose.Types.ObjectId() : null,
       promocode_name: faker.datatype.boolean() ? `PROMO-${faker.string.alphanumeric(5).toUpperCase()}` : null,
       total: parseFloat(faker.number.float({ min: 100, max: 1000, precision: 0.01 }).toFixed(2)),
-      createdAt,
-      updatedAt,
+
+      // New shipping_details field
+      shipping_details: JSON.stringify({
+        recipient_name: faker.person.fullName(),
+        address: faker.location.streetAddress(),
+        city: faker.location.city(),
+        postal_code: faker.location.zipCode(),
+        country: faker.location.country(),
+        phone: faker.phone.number(),
+      }),
     });
   }
 

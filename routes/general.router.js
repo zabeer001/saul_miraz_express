@@ -4,6 +4,7 @@ import { authenticate } from '../middleware/authMiddleware.js';
 import { changeProfileDetails, resetPasswordAuthUser } from '../functionalController/userFunctionalController.js';
 import { changeOrderStatus } from '../functionalController/orderFuntionalController.js';
 import { isAdmin } from '../middleware/adminMiddleware.js';
+import { sendSubscriberMail } from '../functionalController/emailNotificationController.js';
 
 
 const generalRouter = Router();
@@ -24,8 +25,6 @@ generalRouter.post(
   resetPasswordAuthUser
 );
 
-
-
 generalRouter.post(
   '/orders-status/:id',
   authenticate,      // ensure user is logged in
@@ -33,5 +32,8 @@ generalRouter.post(
   upload.none(),     // no files, only fields
   changeOrderStatus  // controller
 );
+
+generalRouter.post('/subscribe',  upload.none() ,sendSubscriberMail);
+// generalRouter.post('/subscribe',  upload.none() ,sendSubscriberMail);
 
 export default generalRouter;

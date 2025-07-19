@@ -27,7 +27,7 @@ const orderSchema = new mongoose.Schema({
     default: null,
   },
   shipping_price: {
-  type: Number,
+    type: Number,
     required: true,
     set: (value) => parseFloat(value.toFixed(2)),
   },
@@ -55,8 +55,12 @@ const orderSchema = new mongoose.Schema({
     trim: true,
     default: null,
   },
+  shipping_details: {
+    type: mongoose.Schema.Types.Mixed,  // Accepts any type (JSON object)
+    default: {}
+  },
   total: {
-   type: Number,
+    type: Number,
     required: true,
     set: (value) => parseFloat(value.toFixed(2)),
   },

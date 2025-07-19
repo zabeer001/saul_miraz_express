@@ -1,24 +1,27 @@
 import mongoose from "mongoose";
 import { formatPaginationResponse } from "../helpers/formatPaginationResponse.js";
 import Contact from "../models/contact.model.js";
+import { conatctMail } from "../functionalController/emailNotificationController.js";
 
 
 class ContactController {
     // POST /contacts
     static async store(req, res) {
         try {
-            const { name, email, message, type } = req.body;
+            const { name, email, how_can_we_help, type } = req.body;
 
-            if (!name || !email || !message) {
-                return res.status(400).json({ success: false, message: 'Name, email, and message are required.' });
+            if (!name || !email || !how_can_we_help) {
+                return res.status(400).json({ success: false, message: 'Name, email, and how_can_we_help are required.' });
             }
 
             const contact = await Contact.create({
                 name,
                 email,
-                message,
+                how_can_we_help,
                 type: type || 'general',
             });
+
+            conatctMail(name,email,how_can_we_help);
 
             return res.status(201).json({ success: true, data: contact });
         } catch (error) {

@@ -80,7 +80,7 @@ class StripeController {
                 const order = await Order.findById(orderId);
 
                 if (order) {
-                    order.paymentStatus = 'paid';
+                    order.payment_status = 'paid';
                     await order.save();
                     return res.redirect(`${frontendUrl}/payment/success`);
                 }

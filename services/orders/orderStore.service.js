@@ -19,6 +19,7 @@ export const orderStoreService = async (req) => {
     promocode_id = null,
     promocode_name = null,
     total,
+    shipping_details
   } = body;
 
   // Log raw body for debugging
@@ -53,6 +54,15 @@ export const orderStoreService = async (req) => {
   shipping_price = Number(shipping_price);
   total = Number(total);
 
+if (typeof shipping_details === 'object' && shipping_details !== null) {
+  shipping_details = JSON.stringify(shipping_details);
+}
+
+// console.log(typeof shipping_details);
+
+
+  
+
 
 
   // Create order
@@ -69,6 +79,7 @@ export const orderStoreService = async (req) => {
     promocode_id,
     promocode_name,
     total,
+    shipping_details
   });
 
   // Sync products to OrderProduct pivot table
