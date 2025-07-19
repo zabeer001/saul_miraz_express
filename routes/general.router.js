@@ -3,6 +3,7 @@ import upload from '../helpers/multer.js';
 import { authenticate } from '../middleware/authMiddleware.js';
 import { changeProfileDetails, resetPasswordAuthUser } from '../functionalController/userFunctionalController.js';
 import { changeOrderStatus } from '../functionalController/orderFuntionalController.js';
+import { isAdmin } from '../middleware/adminMiddleware.js';
 
 
 const generalRouter = Router();
@@ -28,6 +29,7 @@ generalRouter.post(
 generalRouter.post(
   '/orders-status/:id',
   authenticate,      // ensure user is logged in
+  isAdmin,
   upload.none(),     // no files, only fields
   changeOrderStatus  // controller
 );
