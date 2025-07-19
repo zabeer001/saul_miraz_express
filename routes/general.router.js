@@ -20,7 +20,6 @@ generalRouter.post(
 generalRouter.post(
   '/password/reset-for-auth-user',
   authenticate,      // ensure user is logged in and req.authUser is set
-  upload.none(),     // no files, only fields
   resetPasswordAuthUser
 );
 
