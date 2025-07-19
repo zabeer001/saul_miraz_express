@@ -1,26 +1,35 @@
 import { Router } from 'express';
 import upload from '../helpers/multer.js';
 import { authenticate } from '../middleware/authMiddleware.js';
-import AuthController from '../controllers/auth.controller.js';
+import { changeProfileDetails, resetPasswordAuthUser } from '../functionalController/userFunctionalController.js';
+import { changeOrderStatus } from '../functionalController/orderFuntionalController.js';
+
 
 const generalRouter = Router();
-// Existing routes
+
+// Change profile details (with image upload)
 generalRouter.post(
-    '/change-profile-details',
-    authenticate,                 // ensure the user is authenticated
-    upload.single('image'),        // handle single image upload
-    AuthController.changeProfileDetails
+  '/change-profile-details',
+  authenticate,                 // ensure the user is authenticated
+  upload.single('image'),        // handle single image upload
+  changeProfileDetails          // call functional controller
 );
 
+// Reset password for authenticated user
 generalRouter.post(
   '/password/reset-for-auth-user',
   authenticate,      // ensure user is logged in and req.authUser is set
   upload.none(),     // no files, only fields
-  AuthController.resetPasswordAuthUser
+  resetPasswordAuthUser
 );
 
 
 
-
+generalRouter.post(
+  '/orders-status/:id',
+  authenticate,      // ensure user is logged in
+  upload.none(),     // no files, only fields
+  changeOrderStatus  // controller
+);
 
 export default generalRouter;
