@@ -11,7 +11,6 @@ authRouter.post('/register', upload.none(), AuthController.signUp);
 authRouter.post('/logout', authenticate, AuthController.logout);
 authRouter.get('/me', authenticate, AuthController.profile);
 authRouter.post('/change-profile-deatils', authenticate, AuthController.profile);
-authRouter.post('/change', authenticate, AuthController.profile);
 authRouter.post('/google/jwt-process', AuthController.loginWithGoogle);
 
 

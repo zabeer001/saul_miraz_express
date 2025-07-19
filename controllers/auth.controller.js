@@ -4,6 +4,7 @@ import { loginService } from '../services/auth/login.service.js';
 import { logoutService } from '../services/auth/logout.service.js';
 import { googleLogin } from '../services/auth/googleLogin.js';
 import { changeProfileDetailsService } from '../services/auth/changeProfileDetailsService.js';
+import { resetPasswordAuthUserService } from '../services/auth/resetPasswordAuthUserService.js';
 
 
 
@@ -87,6 +88,19 @@ static async changeProfileDetails(req, res) {
     console.error('Profile update error:', error);
     return res.status(400).json({
       message: 'Profile update failed',
+      error: error.message,
+    });
+  }
+}
+
+static async resetPasswordAuthUser(req, res) {
+  try {
+    const result = await resetPasswordAuthUserService(req);
+    return res.status(result.status).json(result);
+  } catch (error) {
+    console.error('Reset password error:', error);
+    return res.status(400).json({
+      message: 'Failed to reset password',
       error: error.message,
     });
   }
