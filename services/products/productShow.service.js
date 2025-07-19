@@ -1,5 +1,6 @@
 import Product from "../../models/product.model.js";
 import Review from "../../models/review.model.js";
+import mongoose from "mongoose";
 
 export const productShowService = async (id) => {
   try {
@@ -15,19 +16,34 @@ export const productShowService = async (id) => {
       };
     }
 
-    // Fetch reviews associated with this product
+    // Fetch reviews for this product
     const reviews = await Review.find({ product_id: id })
       .populate("user") // populate user data via virtual
       .lean();
 
-    // Transform data
+    // Use aggregation to calculate average rating & total reviews
+    const reviewStats = await Review.aggregate([
+      { $match: { product_id: new mongoose.Types.ObjectId(id) } },
+      {
+        $group: {
+          _id: "$product_id",
+          avgRating: { $avg: "$rating" },
+          totalReviews: { $sum: 1 }
+        },
+      },
+    ]);
+
+    const avgRating = reviewStats.length > 0 ? reviewStats[0].avgRating : 0;
+    const totalReviews = reviewStats.length > 0 ? reviewStats[0].totalReviews : 0;
+
+    // Transform product data
     product.category = product.category_id;
     delete product.category_id;
 
     product.id = product._id;
-
-    // Attach reviews (populated)
     product.reviews = reviews;
+    product.reviews_avg_rating = avgRating;
+    product.reviews_count = totalReviews;
 
     return {
       success: true,

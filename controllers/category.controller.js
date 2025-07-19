@@ -122,9 +122,8 @@ class CategoryController {
       });
     } catch (error) {
       return res.status(500).json({
-        // message: 'Failed to delete category',
-        message: error.message,
-        error: error.message
+        message: 'Failed to delete category',
+        error: error.message,
       });
     }
   }
