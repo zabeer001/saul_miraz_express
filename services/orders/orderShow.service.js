@@ -1,36 +1,41 @@
 import Order from "../../models/order.model.js";
 import OrderProduct from "../../models/orderProduct.model.js";
+import User from "../../models/user.model.js";  // import User model
 
 export const orderShowService = async (id) => {
   try {
+    // 1. Find the order
     const order = await Order.findById(id).lean();
-
     if (!order) {
       return { success: false, message: 'Order not found' };
     }
 
-    // Get the orderProduct obj from the orderProduct model 
-    const orderProducts = await OrderProduct.find({ order_id: id }).populate('product_id').lean();
+    // 2. Find user details based on order.user_id
+    const customer = await User.findById(order.user_id)
+      .select('-password')  // exclude password field
+      .lean();
 
-    // console.log(orderProducts);
-    
+    // 3. Find order products with populated product details
+    const orderProducts = await OrderProduct.find({ order_id: id })
+      .populate('product_id')
+      .lean();
 
-    // all the data of products with extracting order_id
+    // 4. Transform products array to your needed format
     const products = orderProducts.map(op => ({
-      product: op.product_id, // This contains full product info due to populate
+      product: op.product_id,
       quantity: op.quantity,
     }));
-    //  console.log(products);
 
+    // 5. Return combined data
     return {
       success: true,
       data: {
         ...order,
-        products,
+        customer,          // full user details here
+        products,      // products with quantity
       },
     };
   } catch (error) {
-    console.error('Error in orderShowService:', error);
-    return { success: false, message: 'Something went wrong' };
+    return { success: false, message: error.message };
   }
 };
