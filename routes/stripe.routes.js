@@ -1,5 +1,5 @@
 import express from 'express';
-import StripeController from '../controllers/stripe.controller.js';
+import StripeController from '../controllers/stripe.controllerWEb.js';
 import upload from '../helpers/multer.js';
 import { authenticate } from '../middleware/authMiddleware.js';
 

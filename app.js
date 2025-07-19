@@ -16,13 +16,21 @@ import stripeRouter from './routes/stripe.routes.js';
 import subscribeRouter from './routes/subscribe.routers.js';
 import generalRouter from './routes/general.router.js';
 import customerRouter from './routes/customer.routers.js';
+import bodyParser from 'body-parser';
 
 
 
 
 const app = express();
 
+// Stripe webhook needs raw body
+// app.use('/api/stripe/webhook', bodyParser.raw({ type: 'application/json' }));
 
+// app.post('/api/stripe/webhook', (req, res) => {
+//   // Handle Stripe webhook event here
+//   // Example: verify signature and process event
+//   res.status(200).send('Webhook received');
+// });
 
 // Middleware to parse JSON bodies
 app.use(express.json());
