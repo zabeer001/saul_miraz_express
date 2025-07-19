@@ -84,7 +84,7 @@ export const productUpdateService = async (req, productId) => {
 
     if (stock_quantity > 10) {
       status = "available";
-    } else if (stock_quantity === 0) {
+    } else if ( Number(stock_quantity) == 0) {
       status = "out_of_stock";
     } else if (stock_quantity > 0 && stock_quantity <= 10) {
       status = "low_stock";
