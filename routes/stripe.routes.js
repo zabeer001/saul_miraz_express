@@ -1,13 +1,14 @@
 import express from 'express';
-import StripeController from '../controllers/stripe.controllerWEb.js';
+
 import upload from '../helpers/multer.js';
 import { authenticate } from '../middleware/authMiddleware.js';
+import { checkout, checkoutCancel, checkoutSuccess, checkPaymentStatus } from '../controllers/stripe.controller.js';
 
 const stripeRouter = express.Router();
 
-stripeRouter.post('/checkout', upload.none() , authenticate, StripeController.checkout);
-stripeRouter.get('/success',StripeController.checkoutSuccess);
-stripeRouter.get('/cancel', StripeController.checkoutCancel);
-stripeRouter.post('/check-payment-status', StripeController.checkPaymentStatus);
+stripeRouter.post('/checkout', upload.none(), authenticate, checkout);
+stripeRouter.get('/payment/success', checkoutSuccess);
+stripeRouter.get('/cancel', checkoutCancel);
+stripeRouter.post('/check-payment-status', authenticate, checkPaymentStatus);
 
 export default stripeRouter;
