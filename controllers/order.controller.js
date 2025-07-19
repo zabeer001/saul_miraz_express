@@ -116,20 +116,21 @@ class OrderController {
 
   }
 
-   static async customers(req, res) {
-    try {
-      const result = await orderCustomersService(req);
-      return res.status(200).json({
-        message: "Customers retrieved successfully",
-        data: result,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Failed to retrieve customers",
-        error: error.message,
-      });
-    }
-  }
+  //  static async customers(req, res) {
+  //   try {
+  //     return 'fucked up';
+  //     const result = await orderCustomersService(req);
+  //     return res.status(200).json({
+  //       message: "Customers retrieved successfully",
+  //       data: result,
+  //     });
+  //   } catch (error) {
+  //     return res.status(500).json({
+  //       message: "Failed to retrieve customers",
+  //       error: error.message,
+  //     });
+  //   }
+  // }
 }
 
 export default OrderController;
