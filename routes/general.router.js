@@ -30,6 +30,7 @@ generalRouter.post(
   '/orders-status/:id',
   authenticate,      // ensure user is logged in
   isAdmin,
+  upload.none(),     // no files, only fields
   changeOrderStatus  // controller
 );
 
